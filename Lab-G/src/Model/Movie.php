@@ -6,7 +6,7 @@ use App\Service\Config;
 class Movie
 {
     private ?int $id = null;
-    private ?string $name = null;
+    private ?string $title = null;
     private ?string $producer = null;
     private ?string $description = null;
 
@@ -22,14 +22,14 @@ class Movie
         return $this;
     }
 
-    public function getName(): ?string
+    public function getTitle(): ?string
     {
-        return $this->name;
+        return $this->title;
     }
 
-    public function setName(?string $name): Movie
+    public function setTitle(?string $title): Movie
     {
-        $this->name = $name;
+        $this->title = $title;
 
         return $this;
     }
@@ -71,8 +71,8 @@ class Movie
         if (isset($array['id']) && ! $this->getId()) {
             $this->setId($array['id']);
         }
-        if (isset($array['name'])) {
-            $this->setName($array['name']);
+        if (isset($array['title'])) {
+            $this->setTitle($array['title']);
         }
         if (isset($array['producer'])) {
             $this->setProducer($array['producer']);
@@ -120,22 +120,22 @@ class Movie
     {
         $pdo = new \PDO(Config::get('db_dsn'), Config::get('db_user'), Config::get('db_pass'));
         if (! $this->getId()) {
-            $sql = "INSERT INTO movie (name, producer, description) VALUES (:name, :producer, :content)";
+            $sql = "INSERT INTO movie (title, producer, description) VALUES (:title, :producer, :description)";
             $statement = $pdo->prepare($sql);
             $statement->execute([
-                'name' => $this->getName(),
+                'title' => $this->getTitle(),
                 'producer' => $this->getProducer(),
                 'description' => $this->getDescription(),
             ]);
 
             $this->setId($pdo->lastInsertId());
         } else {
-            $sql = "UPDATE movie SET name = :name, producer = :producer, description = :description WHERE id = :id";
+            $sql = "UPDATE movie SET title = :title, producer = :producer, description = :description WHERE id = :id";
             $statement = $pdo->prepare($sql);
             $statement->execute([
                 ':description' => $this->getDescription(),
                 ':producer' => $this->getProducer(),
-                ':name' => $this->getName(),
+                ':title' => $this->getTitle(),
                 ':id' => $this->getId(),
             ]);
         }
@@ -151,7 +151,7 @@ class Movie
         ]);
 
         $this->setId(null);
-        $this->setName(null);
+        $this->setTitle(null);
         $this->setProducer(null);
         $this->setDescription(null);
     }

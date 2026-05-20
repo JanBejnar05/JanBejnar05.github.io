@@ -25,67 +25,67 @@ class MovieController
             // @todo missing validation
             $movie->save();
 
-            $path = $router->generatePath('post-index');
+            $path = $router->generatePath('movie-index');
             $router->redirect($path);
             return null;
         } else {
-            $post = new Post();
+            $movie = new Movie();
         }
 
-        $html = $templating->render('post/create.html.php', [
-            'post' => $post,
+        $html = $templating->render('movie/create.html.php', [
+            'movie' => $movie,
             'router' => $router,
         ]);
         return $html;
     }
 
-    public function editAction(int $postId, ?array $requestPost, Templating $templating, Router $router): ?string
+    public function editAction(int $movieId, ?array $requestMovie, Templating $templating, Router $router): ?string
     {
-        $post = Post::find($postId);
-        if (! $post) {
-            throw new NotFoundException("Missing post with id $postId");
+        $movie = Movie::find($movieId);
+        if (! $movie) {
+            throw new NotFoundException("Missing movie with id $movieId");
         }
 
-        if ($requestPost) {
-            $post->fill($requestPost);
+        if ($requestMovie) {
+            $movie->fill($requestMovie);
             // @todo missing validation
-            $post->save();
+            $movie->save();
 
-            $path = $router->generatePath('post-index');
+            $path = $router->generatePath('movie-index');
             $router->redirect($path);
             return null;
         }
 
-        $html = $templating->render('post/edit.html.php', [
-            'post' => $post,
+        $html = $templating->render('movie/edit.html.php', [
+            'movie' => $movie,
             'router' => $router,
         ]);
         return $html;
     }
 
-    public function showAction(int $postId, Templating $templating, Router $router): ?string
+    public function showAction(int $movieId, Templating $templating, Router $router): ?string
     {
-        $post = Post::find($postId);
-        if (! $post) {
-            throw new NotFoundException("Missing post with id $postId");
+        $movie = Movie::find($movieId);
+        if (! $movie) {
+            throw new NotFoundException("Missing movie with id $movieId");
         }
 
-        $html = $templating->render('post/show.html.php', [
-            'post' => $post,
+        $html = $templating->render('movie/show.html.php', [
+            'movie' => $movie,
             'router' => $router,
         ]);
         return $html;
     }
 
-    public function deleteAction(int $postId, Router $router): ?string
+    public function deleteAction(int $movieId, Router $router): ?string
     {
-        $post = Post::find($postId);
-        if (! $post) {
-            throw new NotFoundException("Missing post with id $postId");
+        $movie = Movie::find($movieId);
+        if (! $movie) {
+            throw new NotFoundException("Missing movie with id $movieId");
         }
 
-        $post->delete();
-        $path = $router->generatePath('post-index');
+        $movie->delete();
+        $path = $router->generatePath('movie-index');
         $router->redirect($path);
         return null;
     }
